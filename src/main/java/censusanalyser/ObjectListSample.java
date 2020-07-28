@@ -1,6 +1,6 @@
-package com.openlibrary;
+package censusanalyser;
 
-public class CSVPojoClass {
+public class ObjectListSample {
     String name;
     String email;
     String phNo;
