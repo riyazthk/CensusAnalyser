@@ -1,8 +1,11 @@
 package censusanalyser;
 
+
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 
 public class CensusAnalyserTest {
 
@@ -60,6 +63,7 @@ public class CensusAnalyserTest {
         }
 
     }
+
     @Test
     public void givenIndianCensusData_ToWrongHeader_ShouldThrowException() {
         try {
@@ -83,6 +87,7 @@ public class CensusAnalyserTest {
         }
 
     }
+
     @Test
     public void givenIndiaStateCode_WithWrongPath_ShouldThrowException() {
         try {
@@ -94,6 +99,7 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
         }
     }
+
     @Test
     public void givenIndiaStateCode_WithWrongType_ShouldThrowException() {
         try {
@@ -105,6 +111,7 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
         }
     }
+
     @Test
     public void givenIndianStateCode_WithWrongDelimiter_ShouldThrowException() {
         try {
@@ -117,6 +124,7 @@ public class CensusAnalyserTest {
         }
 
     }
+
     @Test
     public void givenIndiaStateCode_ToWrongHeader_ShouldThrowException() {
         try {
@@ -130,4 +138,16 @@ public class CensusAnalyserTest {
 
     }
 
+    @Test
+    public void givenIndianCensusData_WhenSortedState_ShouldReturnSortedResult() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+            String sortedCensusData = censusAnalyser.givenStateWiseSortedCensusData();
+            IndiaCensusCSV[] censusCSV = new Gson().fromJson(sortedCensusData, IndiaCensusCSV[].class);
+            Assert.assertEquals("Andhra Pradesh", censusCSV[0].state);
+        }catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
+        }
+    }
 }
