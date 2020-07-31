@@ -146,7 +146,7 @@ public class CensusAnalyserTest {
             String sortedCensusData = censusAnalyser.givenStateWiseSortedCensusData();
             IndiaCensusCSV[] censusCSV = new Gson().fromJson(sortedCensusData, IndiaCensusCSV[].class);
             Assert.assertEquals("Andhra Pradesh", censusCSV[0].state);
-        }catch (CensusAnalyserException e) {
+        } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
         }
     }
@@ -156,13 +156,29 @@ public class CensusAnalyserTest {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadIndiaStateCodeData(INDIA_STATECODE_CSV_FILE_PATH);
-            String sortedStateData = censusAnalyser.givenStateWiseSortedCodeData();
-            IndiaStateCode[] codeCSV=new Gson().fromJson(sortedStateData,IndiaStateCode[].class);
-            Assert.assertEquals("AD",codeCSV[0].StateCode);
+            String sortedStateData = censusAnalyser.givenStateCodeWiseSortedCodeData();
+            IndiaStateCode[] codeCSV = new Gson().fromJson(sortedStateData, IndiaStateCode[].class);
+            Assert.assertEquals("AD", codeCSV[0].StateCode);
 
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
 
         }
-       }
+    }
+
+    @Test
+    public void givenIndianCensusData_WhenSortedStateCode_ShouldReturnSortedResult()throws CensusAnalyserException {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+            String sortedStateData = censusAnalyser.givenPopulationWiseSortedCensusData();
+            IndiaCensusCSV[] codeCSV = new Gson().fromJson(sortedStateData, IndiaCensusCSV[].class);
+            Assert.assertNotEquals(29, codeCSV[0].population);
+
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
+
+        }
+    }
+
 }
