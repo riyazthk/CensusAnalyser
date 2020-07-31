@@ -188,7 +188,7 @@ public class CensusAnalyserTest {
             censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
             String sortedStateData = censusAnalyser.givenDensityWiseSortedCensusData();
             IndiaCensusCSV[] codeCSV = new Gson().fromJson(sortedStateData, IndiaCensusCSV[].class);
-            Assert.assertNotEquals(29, codeCSV[0].densityPerSqKm);
+            Assert.assertEquals(86, codeCSV[0].densityPerSqKm);
 
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
