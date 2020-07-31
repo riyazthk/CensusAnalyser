@@ -148,14 +148,25 @@ public class CensusAnalyser <E> {
         }
     }
 
-    public String givenStateWiseSortedCodeData() throws CensusAnalyserException {
+    public String givenStateCodeWiseSortedCodeData() throws CensusAnalyserException {
         if(censusCSVList==null || censusCSVList.size()==0){
             throw new CensusAnalyserException("No Census Data",CensusAnalyserException.NO_CENSUS_DATA);
         }
         Comparator<IndiaStateCode>censusComparator=Comparator.comparing(census -> census.StateCode);
         this.sort((Comparator<E>) censusComparator);
-        String sortedStateCensusJson=new Gson().toJson(censusCSVList);
-        return sortedStateCensusJson;
+        String sortedStateCodeCensusJson=new Gson().toJson(censusCSVList);
+        return sortedStateCodeCensusJson;
+
+    }
+
+    public String givenPopulationWiseSortedCensusData() throws CensusAnalyserException {
+        if(censusCSVList==null || censusCSVList.size()==0){
+            throw new CensusAnalyserException("No Census Data",CensusAnalyserException.NO_CENSUS_DATA);
+        }
+        Comparator<IndiaCensusCSV>censusComparator=Comparator.comparing(census -> census.population);
+        this.sort((Comparator<E>) censusComparator);
+        String sortedPopulationCensusJson=new Gson().toJson(censusCSVList);
+        return sortedPopulationCensusJson;
 
     }
 }
