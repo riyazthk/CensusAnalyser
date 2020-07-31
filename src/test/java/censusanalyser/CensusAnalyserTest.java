@@ -150,4 +150,19 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
         }
     }
+
+    @Test
+    public void givenIndianCodeData_WhenSortedStateCode_ShouldReturnSortedResult() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadIndiaStateCodeData(INDIA_STATECODE_CSV_FILE_PATH);
+            String sortedStateData = censusAnalyser.givenStateWiseSortedCodeData();
+            IndiaStateCode[] codeCSV=new Gson().fromJson(sortedStateData,IndiaStateCode[].class);
+            Assert.assertEquals("AD",codeCSV[0].StateCode);
+
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
+
+        }
+       }
 }
