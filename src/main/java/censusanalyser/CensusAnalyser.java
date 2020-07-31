@@ -136,13 +136,13 @@ public class CensusAnalyser <E> {
     }
 
     private void sort(Comparator<E> censusComparator) {
-        for(int i=0;i<censusCSVList.size()-1;i++){
-            for(int j=0;j<censusCSVList.size()-i-1;j++){
-                E censusCSV1=censusCSVList.get(j);
-                E censusCSV2=censusCSVList.get(j+1);
+        for(int firstIndex=0;firstIndex<censusCSVList.size()-1;firstIndex++){
+            for(int secondIndex=0;secondIndex<censusCSVList.size()-firstIndex-1;secondIndex++){
+                E censusCSV1=censusCSVList.get(secondIndex);
+                E censusCSV2=censusCSVList.get(secondIndex+1);
                 if(censusComparator.compare(censusCSV1,censusCSV2)>0){
-                    censusCSVList.set(j,censusCSV2);
-                    censusCSVList.set(j+1,censusCSV1);
+                    censusCSVList.set(secondIndex,censusCSV2);
+                    censusCSVList.set(secondIndex+1,censusCSV1);
                 }
             }
         }
