@@ -175,10 +175,27 @@ public class CensusAnalyser<E> {
         if (censusCSVList == null || censusCSVList.size() == 0) {
             throw new CensusAnalyserException("No Census Data", CensusAnalyserException.NO_CENSUS_DATA);
         }
-        Comparator<IndiaCensusCSV> censusComparator = Comparator.comparing(census -> census.population);
+        Comparator<IndiaCensusCSV> censusComparator = Comparator.comparing(census -> census.densityPerSqKm);
         this.sort((Comparator<E>) censusComparator);
         String sortedDensityCensusJson = new Gson().toJson(censusCSVList);
         return sortedDensityCensusJson;
 
     }
+
+    public String givenAreaWiseSortedCensusData() throws CensusAnalyserException, IOException {
+
+        if (censusCSVList == null || censusCSVList.size() == 0) {
+            throw new CensusAnalyserException("No Census Data", CensusAnalyserException.NO_CENSUS_DATA);
+        }
+        Comparator<IndiaCensusCSV> censusComparator = Comparator.comparing(census -> census.areaInSqKm);
+        this.sort((Comparator<E>) censusComparator);
+        String sortedAreaCensusJson = new Gson().toJson(censusCSVList);
+        FileWriter fileWriter = new FileWriter("SortedArea.json");
+        fileWriter.write(sortedAreaCensusJson);
+        fileWriter.close();
+        return sortedAreaCensusJson;
+
+    }
+
 }
+
