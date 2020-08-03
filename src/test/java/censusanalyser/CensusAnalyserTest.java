@@ -114,7 +114,7 @@ public class CensusAnalyserTest {
     }
 
     @Test
-    public void givenIndianCensusData_WhenSortedStateCode_ShouldReturnSortedResult() throws IOException {
+    public void givenIndianCensusData_WhenSortedPopulation_ShouldReturnSortedResult() throws IOException {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadIndiaCensusData(CensusCSV.class, INDIA_CENSUS_CSV_FILE_PATH);
@@ -167,11 +167,24 @@ public class CensusAnalyserTest {
     public void givenUSCensusCSVFileReturnsCorrectRecords() throws IOException {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            int numOfRecords = censusAnalyser.loadUsCensusData(US_CENSUS_FILE_PATH);
+            int numOfRecords = censusAnalyser.loadUsCensusData(UsCensusCSV.class,US_CENSUS_FILE_PATH);
             Assert.assertEquals(51, numOfRecords);
         } catch (CensusAnalyserException e) {
         }
     }
+    @Test
+    public void givenUsCensusData_WhenSortedPopulation_ShouldReturnSortedResult() throws IOException {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadUsCensusData(UsCensusCSV.class, US_CENSUS_FILE_PATH);
+            String sortedPopulationData = censusAnalyser.givenPopulationWiseSortedUsCensusData();
+            CensusDAO[] censusDAO = new Gson().fromJson(sortedPopulationData, CensusDAO[].class);
+            Assert.assertEquals("Wyomingo", censusDAO[0].state);
 
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
+
+        }
+    }
 
 }
