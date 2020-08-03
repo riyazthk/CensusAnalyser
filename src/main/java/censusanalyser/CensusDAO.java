@@ -1,8 +1,6 @@
 package censusanalyser;
 
-import java.util.Iterator;
-
-public class IndiaCensusDAO {
+public class CensusDAO {
 
     public int tin;
     public int srNo;
@@ -13,14 +11,12 @@ public class IndiaCensusDAO {
     public int population;
     public String stateName;
 
-    public IndiaCensusDAO(IndiaCensusCSV censusCSVIterator, IndiaStateCode censusStateIterator) {
+    public CensusDAO(CensusCSV censusCSVIterator) {
         state = censusCSVIterator.state;
         population = censusCSVIterator.population;
         densityPerSqKm = censusCSVIterator.densityPerSqKm;
         areaInSqKm = censusCSVIterator.areaInSqKm;
-        srNo=censusStateIterator.SrNo;
-        stateCode=censusStateIterator.StateCode;
-        tin=censusStateIterator.TIN;
+//        stateCode=censusStateIterator.StateCode;
 
 
     }
