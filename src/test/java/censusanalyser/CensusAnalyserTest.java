@@ -179,7 +179,7 @@ public class CensusAnalyserTest {
             censusAnalyser.loadUsCensusData(UsCensusCSV.class, US_CENSUS_FILE_PATH);
             String sortedPopulationData = censusAnalyser.givenPopulationWiseSortedUsCensusData();
             CensusDAO[] censusDAO = new Gson().fromJson(sortedPopulationData, CensusDAO[].class);
-            Assert.assertEquals("Wyomingo", censusDAO[0].state);
+            Assert.assertEquals("Wyoming", censusDAO[0].state);
 
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
