@@ -69,6 +69,29 @@ public class CensusAnalyser<E> implements Cloneable {
         }
     }
 
+    public int loadUsCensusData(String usCensusCSVFilePath) throws CensusAnalyserException {
+        CSVBuildFactory csvBuilder = new CSVBuildFactory();
+        try {
+            try (Reader reader = Files.newBufferedReader(Paths.get(usCensusCSVFilePath));) {
+                Iterator<UsCensusCSV> censusIterator = csvBuilder.getCSVFileIterator(reader, UsCensusCSV.class);
+                Iterable<UsCensusCSV> csvIterable = () -> censusIterator;
+                StreamSupport.stream(csvIterable.spliterator(), false)
+                        .map(UsCensusCSV.class::cast)
+                        .forEach(usCensusCSV -> censusMap.put(usCensusCSV.state, new CensusDAO(usCensusCSV)));
+                return censusMap.size();
+            }
+
+        } catch (IOException e) {
+            throw new CensusAnalyserException(e.getMessage(),
+                    CensusAnalyserException.ExceptionType.
+                            CENSUS_FILE_PROBLEM);
+        } catch (CSVBuilderException e) {
+            throw new CensusAnalyserException(e.getMessage(),
+                    CensusAnalyserException.ExceptionType.
+                            CENSUS_FILE_PROBLEM);
+        }
+    }
+
     public int IndiaStateCodeData(String FilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(FilePath));) {
             CSVBuildFactory csvBuilder = new CSVBuildFactory();
@@ -217,7 +240,7 @@ public class CensusAnalyser<E> implements Cloneable {
         if (censusMap == null || censusMap.size() == 0) {
             throw new CensusAnalyserException("No Census Data", CensusAnalyserException.NO_CENSUS_DATA);
         }
-        Comparator<CensusDAO> censusComparator = Comparator.comparing(census -> census.densityPerSqKm);
+        Comparator<CensusDAO> censusComparator = Comparator.comparing(census -> census.populationDensity);
         List<CensusDAO> censusDAOS = censusMap.values().stream().collect(Collectors.toList());
         this.sort(censusDAOS, censusComparator);
         String sortedDensityCensusJson = new Gson().toJson(censusDAOS);
@@ -230,7 +253,7 @@ public class CensusAnalyser<E> implements Cloneable {
         if (censusMap == null || censusMap.size() == 0) {
             throw new CensusAnalyserException("No Census Data", CensusAnalyserException.NO_CENSUS_DATA);
         }
-        Comparator<CensusDAO> censusComparator = Comparator.comparing(census -> census.areaInSqKm);
+        Comparator<CensusDAO> censusComparator = Comparator.comparing(census -> census.totalArea);
         List<CensusDAO> censusDAOS = censusMap.values().stream().collect(Collectors.toList());
         this.sort(censusDAOS, censusComparator);
         String sortedAreaCensusJson = new Gson().toJson(censusDAOS);
@@ -240,7 +263,6 @@ public class CensusAnalyser<E> implements Cloneable {
         return sortedAreaCensusJson;
 
     }
-
 
 
 }
