@@ -154,7 +154,7 @@ public class CensusAnalyser<E> implements Cloneable {
             for (int secondIndex = 0; secondIndex < censusDAO.size() - firstIndex - 1; secondIndex++) {
                 CensusDAO censusCSV1 = censusDAO.get(secondIndex);
                 CensusDAO censusCSV2 = censusDAO.get(secondIndex + 1);
-                if (censusComparator.compare(censusCSV1, censusCSV2) > 0) {
+                if (censusComparator.compare(censusCSV1, censusCSV2) < 0) {
                     censusDAO.set(secondIndex, censusCSV2);
                     censusDAO.set(secondIndex + 1, censusCSV1);
                 }
@@ -235,6 +235,30 @@ public class CensusAnalyser<E> implements Cloneable {
             throw new CensusAnalyserException("No Census Data", CensusAnalyserException.NO_CENSUS_DATA);
         }
         Comparator<CensusDAO> censusComparator = Comparator.comparing(census -> census.population);
+        List<CensusDAO> censusDAOS = censusMap.values().stream().collect(Collectors.toList());
+        this.sort(censusDAOS, censusComparator);
+        String sortedPopulationCensusJson = new Gson().toJson(censusDAOS);
+        return sortedPopulationCensusJson;
+
+    }
+
+    public String givenPopulationDensityWiseSortedUsCensusData() throws CensusAnalyserException {
+        if (censusMap == null || censusMap.size() == 0) {
+            throw new CensusAnalyserException("No Census Data", CensusAnalyserException.NO_CENSUS_DATA);
+        }
+        Comparator<CensusDAO> censusComparator = Comparator.comparing(census -> census.populationDensity);
+        List<CensusDAO> censusDAOS = censusMap.values().stream().collect(Collectors.toList());
+        this.sort(censusDAOS, censusComparator);
+        String sortedPopulationCensusJson = new Gson().toJson(censusDAOS);
+        return sortedPopulationCensusJson;
+
+    }
+
+    public String givenUsAreaWiseSortedUsCensusData() throws CensusAnalyserException {
+        if (censusMap == null || censusMap.size() == 0) {
+            throw new CensusAnalyserException("No Census Data", CensusAnalyserException.NO_CENSUS_DATA);
+        }
+        Comparator<CensusDAO> censusComparator = Comparator.comparing(census -> census.totalArea);
         List<CensusDAO> censusDAOS = censusMap.values().stream().collect(Collectors.toList());
         this.sort(censusDAOS, censusComparator);
         String sortedPopulationCensusJson = new Gson().toJson(censusDAOS);
