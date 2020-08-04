@@ -11,10 +11,14 @@ import java.util.Map;
 
 
 public class CSVBuildFactory implements ICSVBuilder {
-    public Iterator getCSVFileIterator(Reader reader, Class csvClass) throws CSVBuilderException {
-
-        return new OpenCsvBuilder().getCSVFileIterator(reader, csvClass);
-
+    public Iterator getCSVFileIterator(Reader reader, Class csvClass) throws CensusAnalyserException {
+        Iterator value=null;
+        try {
+             value= new OpenCsvBuilder().getCSVFileIterator(reader, csvClass);
+        } catch (CSVBuilderException |RuntimeException e) {
+            throw new CensusAnalyserException("dfsgdret",CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
+        }
+        return value;
     }
 
     @Override

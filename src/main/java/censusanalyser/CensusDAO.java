@@ -8,7 +8,7 @@ public class CensusDAO {
     public double populationDensity;
     public int population;
 
-    public CensusDAO(CensusCSV censusCSVIterator) {
+    public CensusDAO(IndianCensusCSV censusCSVIterator) {
         state = censusCSVIterator.state;
         population = censusCSVIterator.population;
         populationDensity = censusCSVIterator.densityPerSqKm;
