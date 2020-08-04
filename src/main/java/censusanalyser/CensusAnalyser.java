@@ -11,22 +11,14 @@ import java.util.stream.Collectors;
 public class CensusAnalyser<E> {
     HashMap<String, CensusDAO> censusMap = new HashMap<>();
 
+    public enum Country {INDIA, US}
+
+    ;
     CensusLoader censusLoader = new CensusLoader();
 
-    public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException, RuntimeException {
-        censusMap = (HashMap<String, CensusDAO>) censusLoader.loadCensusData(IndianCensusCSV.class, csvFilePath);
+    public int loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException, RuntimeException {
+        censusMap = (HashMap<String, CensusDAO>) censusLoader.loadCensusData(country, csvFilePath);
         return censusMap.size();
-    }
-
-    public int loadUsCensusData(String usCensusCSVFilePath) throws CensusAnalyserException {
-        censusMap = (HashMap<String, CensusDAO>) new CensusLoader().loadCensusData(UsCensusCSV.class, usCensusCSVFilePath);
-        return censusMap.size();
-    }
-
-    public int loadIndiaStateCodeData(String stateCensusFilePath) throws IOException, CensusAnalyserException {
-        censusMap = (HashMap<String, CensusDAO>) censusLoader.loadCensusData(IndiaStateCode.class, stateCensusFilePath);
-        return censusMap.size();
-
     }
 
 

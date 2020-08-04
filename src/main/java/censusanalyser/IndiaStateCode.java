@@ -2,7 +2,6 @@ package censusanalyser;
 
 import com.opencsv.bean.CsvBindByName;
 
-import java.util.jar.Attributes;
 
 public class IndiaStateCode{
     @CsvBindByName(column = "SrNo", required = true)
@@ -28,7 +27,5 @@ public class IndiaStateCode{
                 '}';
     }
 
-    public Object clone()throws CloneNotSupportedException{
-        return super.clone();
-    }
+
 }
